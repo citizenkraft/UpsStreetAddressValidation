@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>citizenkraft.UpsStreetAddressValidation</id>
+    <version>1.0.0</version>
+    <title>UPS Street Address Validation</title>
+    <authors>Dustin Kraft</authors>
+    <owners>Dustin Kraft</owners>
+    <licenseUrl>https://github.com/citizenkraft/UpsStreetAddressValidation/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/citizenkraft/UpsStreetAddressValidation</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A simple wrapper to do street level address validation via the UPS API.  All you need is your UPS login, password and license number.</description>
+    <releaseNotes>Initial release</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>ups address validation</tags>
+		<dependencies>
+			<dependency id="Newtonsoft.Json" version="9.0.1"/>
+		</dependencies>
+  </metadata>
+	<files>
+			<file src="readme.txt" target="content\readme.txt"/>
+	  	<file src="bin\Debug\*.dll" target="lib" /> 
+		 <file src="bin\Debug\*.pdb" target="lib" /> 
+	</files>
+
+</package>
