@@ -12,8 +12,6 @@ namespace citizenkraft.UpsStreetAddressValidation.Entities
 		public string ValidAddressIndicator { get; set; }
 		public Candidate Candidate { get; set; }
 		public string NoCandidatesIndicator { get; set; }
-
-		public bool IsValidResponse { get { return this.ValidAddressIndicator != null; } }
 		public bool HasCandidate { get { return this.Candidate != null && this.Candidate.AddressKeyFormat != null; } }
 	}
 

@@ -8,21 +8,28 @@ namespace citizenkraft.UpsStreetAddressValidation.Entities
 {
 	public class AddressValidationResult
 	{
+		public enum ResponseStatus
+		{
+			CorrectionFound,
+			NoCorrectionFound,
+			ErrorInResponse,
+			Exception
+		}
+		public ResponseStatus Status { get; set; }
 		public string ResponseMessage { get; set; }
-		public bool Success { get; set; }
 		public Address CorrectedAddress { get; set; }
 		public ErrorDetail ErrorDetail { get; set; }
 	
 		public AddressValidationResult(Exception ex)
 		{
 			this.ResponseMessage = ex.Message;
-			this.Success = false;
+			this.Status = ResponseStatus.Exception;
 		}
 		internal AddressValidationResult(AddressValidationResponse response)
 		{
 			if (response.XAVResponse != null)
 			{
-				this.Success = response.XAVResponse.IsValidResponse;
+				this.Status = (response.XAVResponse.HasCandidate ? ResponseStatus.CorrectionFound : ResponseStatus.NoCorrectionFound);
 				if (response.XAVResponse.HasCandidate)
 				{
 					this.ResponseMessage = "A correction has been suggested";
@@ -34,7 +41,7 @@ namespace citizenkraft.UpsStreetAddressValidation.Entities
 				}
 			} else
 			{
-				this.Success = false;
+				this.Status = ResponseStatus.ErrorInResponse;
 				this.ResponseMessage = "An error has occured.";
 				this.ErrorDetail = response.Fault.detail.Errors.ErrorDetail;
 			}
