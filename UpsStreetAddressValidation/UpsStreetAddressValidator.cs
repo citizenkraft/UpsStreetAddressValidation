@@ -41,16 +41,23 @@ namespace citizenkraft.UpsStreetAddressValidation
 		}
 		public AddressValidationResult ValidateAddress(string street, string city, string state, string postalCode, string countryCode)
 		{
-			try
+			if (string.Equals(countryCode, "US", StringComparison.OrdinalIgnoreCase) || string.Equals(countryCode, "PR", StringComparison.OrdinalIgnoreCase))
 			{
-				var addressToValidate = new Address(street, city, state, postalCode, countryCode);
-				var result = new AddressValidationResult(ValidateAddress(addressToValidate), addressToValidate);
-				
-				return result;
-			}
-			catch (Exception ex)
+				try
+				{
+					var addressToValidate = new Address(street, city, state, postalCode, countryCode);
+					var result = new AddressValidationResult(ValidateAddress(addressToValidate), addressToValidate);
+
+					return result;
+				}
+				catch (Exception ex)
+				{
+					return new AddressValidationResult(ex);
+				}
+			} else
 			{
-				return new AddressValidationResult(ex);
+				//not a US country code
+				return new AddressValidationResult("Validation can only be completed on US and Puerto Rican addresses", AddressValidationResult.ResponseStatus.NotUSAddress);
 			}
 			
 		}

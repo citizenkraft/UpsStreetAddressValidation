@@ -55,6 +55,7 @@
     <Compile Include="Entities\TransactionReference.cs" />
     <Compile Include="Entities\XAVRequest.cs" />
     <Compile Include="Entities\XAVResponse.cs" />
+    <Compile Include="Extensions\SingleValueArrayConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UpsStreetAddressValidator.cs" />
   </ItemGroup>

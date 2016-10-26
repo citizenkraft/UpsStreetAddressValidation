@@ -1,4 +1,6 @@
-﻿using System;
+﻿using citizenkraft.UpsStreetAddressValidation.Extensions;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +12,11 @@ namespace citizenkraft.UpsStreetAddressValidation.Entities
 	{
 		public Response Response { get; set; }
 		public string ValidAddressIndicator { get; set; }
-		public Candidate Candidate { get; set; }
+		[JsonConverter(typeof(SingleValueArrayConverter<Candidate>))]
+		public List<Candidate> Candidate { get; set; }
 		public string NoCandidatesIndicator { get; set; }
-		public bool HasCandidate { get { return this.Candidate != null && this.Candidate.AddressKeyFormat != null; } }
+		public string AmbiguousAddressIndicator { get; set; }
+		public bool HasCandidates { get { return this.Candidate != null && this.Candidate.Any(); } }
 	}
 
 }

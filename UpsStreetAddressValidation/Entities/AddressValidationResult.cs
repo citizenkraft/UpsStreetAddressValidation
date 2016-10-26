@@ -10,17 +10,23 @@ namespace citizenkraft.UpsStreetAddressValidation.Entities
 	{
 		public enum ResponseStatus
 		{
-			CorrectionFound,
+			CorrectionsFound,
 			NoCorrectionFound,
 			ErrorInResponse,
-			Exception
+			Exception,
+			NotUSAddress
 		}
 		public ResponseStatus Status { get; set; }
 		public string ResponseMessage { get; set; }
-		public Address CorrectedAddress { get; set; }
+		public List<Address> AddressCandidates { get; set; }
 		public ErrorDetail ErrorDetail { get; set; }
 	
-		public AddressValidationResult(Exception ex)
+		internal AddressValidationResult(string message, ResponseStatus status)
+		{
+			this.ResponseMessage = message;
+			this.Status = status;
+		}
+		internal AddressValidationResult(Exception ex)
 		{
 			this.ResponseMessage = ex.Message;
 			this.Status = ResponseStatus.Exception;
@@ -29,26 +35,27 @@ namespace citizenkraft.UpsStreetAddressValidation.Entities
 		{
 			if (response.XAVResponse != null)
 			{
-				if (response.XAVResponse.HasCandidate && response.XAVResponse.Candidate.AddressKeyFormat.CompareTo(addressToValidate) == 0)
+				if (response.XAVResponse.HasCandidates && response.XAVResponse.Candidate.Count == 1 && response.XAVResponse.Candidate.First().AddressKeyFormat.CompareTo(addressToValidate) == 0)
 				{
 					this.ResponseMessage = "Corrected address was the same as the submitted address";
 					this.Status = ResponseStatus.NoCorrectionFound;
 				}
-				else if (response.XAVResponse.HasCandidate)
+				else if (response.XAVResponse.HasCandidates)
 				{
-					this.ResponseMessage = "A correction has been suggested";
-					this.CorrectedAddress = response.XAVResponse.Candidate.AddressKeyFormat;
-					this.Status = ResponseStatus.CorrectionFound;
+					this.ResponseMessage = string.Format("{0} correction{1} found", response.XAVResponse.Candidate.Count, (response.XAVResponse.Candidate.Count == 1 ? " was" : "s were"));
+					this.AddressCandidates = response.XAVResponse.Candidate.Select(x=> x.AddressKeyFormat).ToList();
+					this.Status = ResponseStatus.CorrectionsFound;
 				}
 				else
 				{
-					this.ResponseMessage = "No correction has been suggested";
+					this.ResponseMessage = "No corrections were found";
 					this.Status = ResponseStatus.NoCorrectionFound;
 				}
-			} else
+			}
+			else
 			{
 				this.Status = ResponseStatus.ErrorInResponse;
-				this.ResponseMessage = "An error has occured.";
+				this.ResponseMessage = "An error has occured";
 				this.ErrorDetail = response.Fault.detail.Errors.ErrorDetail;
 			}
 		}

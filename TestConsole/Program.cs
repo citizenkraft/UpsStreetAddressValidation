@@ -5,24 +5,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ValidatorExample
+namespace TestConsole
 {
 	class Program
 	{
 		static void Main(string[] args)
 		{
-			//Usage:
-
-			//create the object
 			var validator = new citizenkraft.UpsStreetAddressValidation.UpsStreetAddressValidator("username", "password", "license key", false);
 			//get the response
-			var validatorResponse = validator.ValidateAddress("1865 GAYLORD ST", "DENVER", "CO", "80206-1236", "US");
+			//multiple address candidates
+			var validatorResponse = validator.ValidateAddress("809 Broadway st", "lenoir city", "tn", "37771", "US");
 
+			//single address candidate response
+			var validatorResponse1 = validator.ValidateAddress("1865 Gaylord St", "Denver", "co", "80206", "US");
+
+			//Not US or PR address
+			var validatorResponse2 = validator.ValidateAddress("51 westendstrasse", "Munchen", "Bavaria", "", "DE");
+
+			//just garbage
+			var validatorResponse3 = validator.ValidateAddress("1234 Whatever Ln", "Fourside", "Eagleland", "12345", "US");
+	
+			//Usage:
 			switch (validatorResponse.Status)
 			{
-				case AddressValidationResult.ResponseStatus.CorrectionFound:
-					//corrected address can be found here: validatorResponse.CorrectedAddress.Street validatorResponse.CorrectedAddress.Whatever 
-					Console.WriteLine(validatorResponse.CorrectedAddress.Street);
+				case AddressValidationResult.ResponseStatus.CorrectionsFound:
+					//corrected address can be found here: validatorResponse.CorrectedAddress.Street validatorResponse.AddressCandidates[0].Whatever 
+					Console.WriteLine(validatorResponse.AddressCandidates.First().Street);
 					break;
 				case AddressValidationResult.ResponseStatus.NoCorrectionFound:
 					//no corrected address was found, but everything went fine.
@@ -36,10 +44,14 @@ namespace ValidatorExample
 					//big break, bad connection probably.  I pass the sometimes helpful exception message back
 					Console.WriteLine(validatorResponse.ResponseMessage);
 					break;
+				case AddressValidationResult.ResponseStatus.NotUSAddress:
+					//UPS only supports looking up US and Puerto Rican addresses.
+					Console.WriteLine(validatorResponse.ResponseMessage);
+					break;
 				default:
 					break;
 			}
-			 //Voila!
+			//Voila!
 		}
 	}
 }

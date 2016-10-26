@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>citizenkraft.UpsStreetAddressValidation</id>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <title>UPS Street Address Validation</title>
     <authors>Dustin Kraft</authors>
     <owners>Dustin Kraft</owners>
@@ -10,12 +10,15 @@
     <projectUrl>https://github.com/citizenkraft/UpsStreetAddressValidation</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A simple wrapper to do street level address validation via the UPS API.  All you need is your UPS login, password and license number.</description>
+		<summary>
+			A simple wrapper to do street level address validation via the UPS API.  All you need is your UPS login, password and license number.
+		</summary>
     <releaseNotes>
-			-Changed Address.PostCode to Address.Postcode for consitency
-			-Added a compare method on the Address.  If the submitted address is the same as the suggested address, it will now return a NoCorrectionFound status and the appropriate message.
+			-Added support for multiple address candidates
+			-Now returns a new status code if you try to validate a non US or Puerto Rican address (UPS does not support)
 		</releaseNotes>
     <copyright>Copyright 2016</copyright>
-    <tags>ups address validation</tags>
+    <tags>ups street level address validation</tags>
 		<dependencies>
 			<dependency id="Newtonsoft.Json" version="9.0.1"/>
 		</dependencies>
