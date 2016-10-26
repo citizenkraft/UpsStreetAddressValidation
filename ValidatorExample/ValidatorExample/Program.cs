@@ -14,7 +14,7 @@ namespace ValidatorExample
 			//Usage:
 
 			//create the object
-			var validator = new citizenkraft.UpsStreetAddressValidation.UpsStreetAddressValidator("peaches5915", "3surdej3", "FC56AE12C4C7DF60", false);
+			var validator = new citizenkraft.UpsStreetAddressValidation.UpsStreetAddressValidator("username", "password", "license key", false);
 			//get the response
 			var validatorResponse = validator.ValidateAddress("1865 GAYLORD ST", "DENVER", "CO", "80206-1236", "US");
 
