@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\AddressKeyFormat.cs" />
+    <Compile Include="Entities\Address.cs" />
     <Compile Include="Entities\AddressValidationRequest.cs" />
     <Compile Include="Entities\AddressValidationResponse.cs" />
     <Compile Include="Entities\AddressValidationResult.cs" />

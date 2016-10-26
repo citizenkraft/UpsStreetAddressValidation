@@ -21,7 +21,7 @@ namespace citizenkraft.UpsStreetAddressValidation.Entities
 					CustomerContext = "Address Verification" 
 				}
 			};
-			this.MaximumListSize = "10";
+			this.MaximumListSize = "1";
 			this.AddressKeyFormat = address;
 		}
 

@@ -38,14 +38,15 @@ namespace citizenkraft.UpsStreetAddressValidation
 				result = client.UploadString(this.UpsEndpoint, "POST", jsonReq);
 			}
 			return JsonConvert.DeserializeObject<AddressValidationResponse>(result);
-			
 		}
 		public AddressValidationResult ValidateAddress(string street, string city, string state, string postalCode, string countryCode)
 		{
 			try
 			{
-				var x = ValidateAddress(new Address(street, city, state, postalCode, countryCode));
-				return new AddressValidationResult(x);
+				var addressToValidate = new Address(street, city, state, postalCode, countryCode);
+				var result = new AddressValidationResult(ValidateAddress(addressToValidate), addressToValidate);
+				
+				return result;
 			}
 			catch (Exception ex)
 			{

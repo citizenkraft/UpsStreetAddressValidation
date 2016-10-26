@@ -25,19 +25,25 @@ namespace citizenkraft.UpsStreetAddressValidation.Entities
 			this.ResponseMessage = ex.Message;
 			this.Status = ResponseStatus.Exception;
 		}
-		internal AddressValidationResult(AddressValidationResponse response)
+		internal AddressValidationResult(AddressValidationResponse response, Address addressToValidate)
 		{
 			if (response.XAVResponse != null)
 			{
-				this.Status = (response.XAVResponse.HasCandidate ? ResponseStatus.CorrectionFound : ResponseStatus.NoCorrectionFound);
-				if (response.XAVResponse.HasCandidate)
+				if (response.XAVResponse.HasCandidate && response.XAVResponse.Candidate.AddressKeyFormat.CompareTo(addressToValidate) == 0)
+				{
+					this.ResponseMessage = "Corrected address was the same as the submitted address";
+					this.Status = ResponseStatus.NoCorrectionFound;
+				}
+				else if (response.XAVResponse.HasCandidate)
 				{
 					this.ResponseMessage = "A correction has been suggested";
 					this.CorrectedAddress = response.XAVResponse.Candidate.AddressKeyFormat;
+					this.Status = ResponseStatus.CorrectionFound;
 				}
 				else
 				{
 					this.ResponseMessage = "No correction has been suggested";
+					this.Status = ResponseStatus.NoCorrectionFound;
 				}
 			} else
 			{
